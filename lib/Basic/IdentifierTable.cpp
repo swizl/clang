@@ -20,6 +20,7 @@
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/FoldingSet.h"
 #include "llvm/ADT/SmallString.h"
+#include "llvm/ADT/StringSwitch.h"
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
 #include <cstdio>
@@ -287,7 +288,27 @@ tok::PPKeywordKind IdentifierInfo::getPPKeywordID() const {
   if (Len < 2) return tok::pp_not_keyword;
   const char *Name = getNameStart();
   switch (HASH(Len, Name[0], Name[2])) {
-  default: return tok::pp_not_keyword;
+  //default: return tok::pp_not_keyword;
+  default: return llvm::StringSwitch<tok::PPKeywordKind>(Name)
+    .Case("如", tok::pp_if)
+    .Case("另如", tok::pp_elif)
+    .Case("另", tok::pp_else)
+    .Case("行", tok::pp_line)
+    .Case("了如", tok::pp_endif)
+    .Case("错误", tok::pp_error)
+    .Case("如定义", tok::pp_ifdef)
+    .Case("消定义", tok::pp_undef)
+    .Case("断言", tok::pp_assert)
+    .Case("定义", tok::pp_define)
+    .Case("如未定义", tok::pp_ifndef)
+    .Case("输入", tok::pp_import)
+    .Case("杂注", tok::pp_pragma)
+    .Case("已定义", tok::pp_defined)
+    .Case("含", tok::pp_include)
+    .Case("告警", tok::pp_warning)
+    .Case("消断言", tok::pp_unassert)
+    .Case("含下个", tok::pp_include_next)
+    .Default(tok::pp_not_keyword);
   CASE( 2, 'i', '\0', if);
   CASE( 4, 'e', 'i', elif);
   CASE( 4, 'e', 's', else);
