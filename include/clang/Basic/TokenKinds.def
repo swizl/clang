@@ -438,7 +438,7 @@ ALIAS("空针", nullptr            , KEYCXX11)
 CXX11_KEYWORD(static_assert         , 0)
 ALIAS("静态断言", static_assert            , KEYCXX11)
 CXX11_KEYWORD(thread_local          , 0)
-ALIAS("线程局部", static_assert            , KEYCXX11)
+ALIAS("线程局部", thread_local            , KEYCXX11)
 
 // C++2a / concepts TS keywords
 CONCEPTS_KEYWORD(concept)
